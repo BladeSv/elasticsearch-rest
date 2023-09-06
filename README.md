@@ -1,5 +1,8 @@
 # elasticsearch-rest
 
+## Run guide
+
+Web UI (swagger) http://localhost:8080/swagger-ui/index.html
 
 ## 3 - Implement Java Low Level REST Client for retrieval of employees info
 
