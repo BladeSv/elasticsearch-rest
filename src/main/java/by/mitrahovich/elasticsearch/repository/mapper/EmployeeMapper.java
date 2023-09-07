@@ -2,7 +2,6 @@ package by.mitrahovich.elasticsearch.repository.mapper;
 
 
 import by.mitrahovich.elasticsearch.entity.Employee;
-import by.mitrahovich.elasticsearch.entity.EmployeeDeserializer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
