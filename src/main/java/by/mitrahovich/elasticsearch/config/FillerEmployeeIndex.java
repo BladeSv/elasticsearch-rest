@@ -9,9 +9,12 @@ import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 @AllArgsConstructor
 @Component
@@ -41,9 +44,7 @@ public class FillerEmployeeIndex {
         Request requestEmployees = new Request(
                 "POST",
                 "/employees/_bulk");
-//        File initialFile = new File("employees.json");
-        File initialFile = ctx.getResource("classpath:employees.json").getFile();
-        InputStream targetStream = new BufferedInputStream(new FileInputStream(initialFile));
+        InputStream targetStream = new BufferedInputStream(new ClassPathResource("employees.json").getInputStream());
         InputStreamEntity inputStreamEntity = new InputStreamEntity(targetStream);
         inputStreamEntity.setContentType(ContentType.APPLICATION_JSON.toString());
         requestEmployees.setEntity(inputStreamEntity);
