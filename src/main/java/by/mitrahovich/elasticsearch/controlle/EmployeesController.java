@@ -20,6 +20,7 @@ public class EmployeesController {
 
     @GetMapping
     public List<Employee> getAllEmployees() throws IOException {
+        List<Employee> allEmployees = employeesService.getAllEmployees();
         return employeesService.getAllEmployees();
     }
 

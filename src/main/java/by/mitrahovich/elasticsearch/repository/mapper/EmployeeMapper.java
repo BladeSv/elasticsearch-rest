@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,7 +39,11 @@ public class EmployeeMapper {
     }
 
     public static String employeeToJson(Employee employee) throws JsonProcessingException {
-        return mapper.writeValueAsString(employee);
+        String updatedJson = mapper.writeValueAsString(employee);
+        JsonNode jsonNode = mapper.readTree(updatedJson);
+        ObjectNode object = (ObjectNode) jsonNode;
+        object.remove("_id");
+        return mapper.writeValueAsString(object);
     }
 }
 

@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Configuration;
 public class Config {
     @Bean
     public RestClientBuilder getRestClient() {
-        return RestClient.builder(new HttpHost("localhost", 9200, "http"));
+        return RestClient.builder(new HttpHost("elasticsearch", 9200, "http"));
     }
 }
