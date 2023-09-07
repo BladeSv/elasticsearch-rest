@@ -2,6 +2,10 @@
 
 ## Run guide
 
+Docker require for staring this project.
+
+For start ``docker-compose up --build`` ('--build' require for rebuild app after switching branches )
+
 Web UI (swagger) http://localhost:8080/swagger-ui/index.html
 
 ## 3 - Implement Java Low Level REST Client for retrieval of employees info
