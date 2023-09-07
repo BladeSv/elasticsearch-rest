@@ -1,5 +1,6 @@
 package by.mitrahovich.elasticsearch.controlle;
 
+import by.mitrahovich.elasticsearch.config.FillerEmployeeIndex;
 import by.mitrahovich.elasticsearch.entity.Employee;
 import by.mitrahovich.elasticsearch.service.EmployeesService;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,6 +16,7 @@ import java.util.List;
 public class EmployeesController {
 
     private EmployeesService employeesService;
+    private FillerEmployeeIndex fillerEmployeeIndex;
 
     @GetMapping
     public List<Employee> getAllEmployees() throws IOException {
@@ -47,5 +49,10 @@ public class EmployeesController {
     @DeleteMapping
     public String removeEmployee(@RequestParam String id) throws IOException {
         return employeesService.removeEmployee(id);
+    }
+
+    @GetMapping("/fillemployeedb")
+    public void fillEmployeeDb() throws IOException {
+        fillerEmployeeIndex.fillDb();
     }
 }
