@@ -13,3 +13,4 @@ public class Config {
         return RestClient.builder(new HttpHost("elasticsearch", 9200, "http"));
     }
 }
+

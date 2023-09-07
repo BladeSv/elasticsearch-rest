@@ -20,7 +20,6 @@ public class EmployeesController {
 
     @GetMapping
     public List<Employee> getAllEmployees() throws IOException {
-        List<Employee> allEmployees = employeesService.getAllEmployees();
         return employeesService.getAllEmployees();
     }
 
@@ -53,7 +52,7 @@ public class EmployeesController {
     }
 
     @GetMapping("/fillemployeedb")
-    public void fillEmployeeDb() throws IOException {
-        fillerEmployeeIndex.fillDb();
+    public String fillEmployeeDb() throws IOException {
+        return fillerEmployeeIndex.fillDb();
     }
 }
