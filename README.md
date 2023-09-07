@@ -8,6 +8,9 @@ For start ``docker-compose up --build`` ('--build' require for rebuild app after
 
 Web UI (swagger) http://localhost:8080/swagger-ui/index.html
 
+When project up you need to run endpoint ``GET /employees-controller/fillEmployeeDb`` in swagger for fill employee index
+the start data.
+
 ## 3 - Implement Java Low Level REST Client for retrieval of employees info
 
 [Java Low Level REST Client](https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/java-rest-low.html)
