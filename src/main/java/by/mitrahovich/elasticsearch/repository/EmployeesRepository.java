@@ -1,13 +1,9 @@
 package by.mitrahovich.elasticsearch.repository;
 
 import by.mitrahovich.elasticsearch.entity.Employee;
-import by.mitrahovich.elasticsearch.repository.mapper.EmployeeMapper;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.*;
 import lombok.AllArgsConstructor;
-import org.apache.http.util.EntityUtils;
-import org.elasticsearch.client.Request;
-import org.elasticsearch.client.Response;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestClientBuilder;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -17,81 +13,85 @@ import java.util.List;
 @Repository
 public class EmployeesRepository {
 
-    private RestClientBuilder clientBuilder;
+    private ElasticsearchClient client;
 
     public List<Employee> getAllEmployees() throws IOException {
-        RestClient client = clientBuilder.build();
-        Request request = new Request(
-                "POST",
-                "/employees/_search?pretty");
-        Response response = client.performRequest(request);
-        client.close();
+        SearchResponse<Employee> employeesResponse = client.search(s -> s
+                        .index("employees")
+                , Employee.class);
+        List<Employee> employees = employeesResponse.hits().hits().stream()
+                .map(hit -> {
+                    Employee source = hit.source();
+                    source.setId(hit.id());
+                    return source;
+                }).toList();
 
-        return EmployeeMapper.toEmployees(EntityUtils.toString(response.getEntity()));
+        return employees;
     }
 
     public Employee getEmployeesById(String id) throws IOException {
-        RestClient client = clientBuilder.build();
-        Request request = new Request(
-                "POST",
-                "/employees/_search?pretty");
-        String query = String.format("{\"query\":{\"term\":{\"_id\":{\"value\":\"%s\"}}}}", id);
-        request.setJsonEntity(query);
-        Response response = client.performRequest(request);
-        client.close();
+        GetRequest employeesReq = new GetRequest.Builder()
+                .index("employees")
+                .id(id)
+                .build();
+        GetResponse<Employee> employeeGetResponse = client.get(employeesReq, Employee.class);
+        Employee source = employeeGetResponse.source();
+        source.setId(employeeGetResponse.id());
 
-        return EmployeeMapper.toEmployees(EntityUtils.toString(response.getEntity())).stream().findFirst().orElse(null);
+        return source;
     }
 
     public List<Employee> getEmployeesByField(String field, String value) throws IOException {
-        RestClient client = clientBuilder.build();
-        Request request = new Request(
-                "POST",
-                "/employees/_search?pretty");
-        String query = String.format("{\"query\":{\"match\":{\"%s\":{\"query\":\"%s\"}}}}", field, value);
-        request.setJsonEntity(query);
-        Response response = client.performRequest(request);
-        client.close();
+        List<Employee> employees = client.search(s -> s
+                                .index("employees")
+                                .query(q -> q
+                                        .match(m -> m
+                                                .field(field)
+                                                .query(value))),
+                        Employee.class)
+                .hits()
+                .hits().stream()
+                .map(hit -> {
+                    Employee source = hit.source();
+                    source.setId(hit.id());
+                    return source;
+                })
+                .toList();
 
-        return EmployeeMapper.toEmployees(EntityUtils.toString(response.getEntity()));
+        return employees;
     }
 
     public String createEmployee(Employee employee) throws IOException {
-        RestClient client = clientBuilder.build();
-        Request request = new Request(
-                "POST",
-                String.format("/employees/_create/%s", employee.get_id()));
+        CreateRequest<Object> employees = new CreateRequest.Builder<>()
+                .index("employees")
+                .id(employee.getId())
+                .document(employee)
+                .build();
+        CreateResponse createResponse = client.create(employees);
+        String id = createResponse.id();
 
-        String employeeJson = EmployeeMapper.employeeToJson(employee);
-        request.setJsonEntity(employeeJson);
-        Response response = client.performRequest(request);
-        client.close();
-
-        return EntityUtils.toString(response.getEntity());
+        return "id: " + id;
     }
 
     public String removeEmployee(String id) throws IOException {
-        RestClient client = clientBuilder.build();
-        Request request = new Request(
-                "DELETE",
-                String.format("/employees/_doc/%s", id));
-
-        Response response = client.performRequest(request);
-        client.close();
-
-        return EntityUtils.toString(response.getEntity());
+        DeleteRequest employeesReq = new DeleteRequest.Builder()
+                .index("employees")
+                .id(id)
+                .build();
+        DeleteResponse delete = client.delete(employeesReq);
+        return "id: " + delete.id();
     }
 
-    public String getAggregation(String metricField, String metricType, String aggregationField) throws IOException {
-        RestClient client = clientBuilder.build();
-        Request request = new Request(
-                "POST",
-                "/employees/_search?pretty");
-        String aggregationJson = String.format("{\"size\":0,\"aggs\":{\"%s\":{\"%s\":{\"field\":\"%s\"}}}}", metricField, metricType, aggregationField);
-        request.setJsonEntity(aggregationJson);
-        Response response = client.performRequest(request);
-        client.close();
+    public String getAvgAggregation(String metricField, String aggregationField) throws IOException {
+        SearchResponse<Employee> search = client.search(s ->
+                        s.index("employees")
+                                .size(0)
+                                .aggregations(metricField,
+                                        a -> a.avg(avg -> avg
+                                                .field(aggregationField)))
+                , Employee.class);
+        double value = search.aggregations().get(metricField).avg().value();
 
-        return EntityUtils.toString(response.getEntity());
+        return String.format("Avg of field %s: %s", aggregationField, value);
     }
 }

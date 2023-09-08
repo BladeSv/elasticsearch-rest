@@ -35,7 +35,8 @@ public class EmployeeDeserializer extends StdDeserializer<Employee> {
             ArrayNode datasetArray = (ArrayNode) sourceNode.get("skills");
             List<String> skills = new ArrayList<>();
             datasetArray.forEach(node -> skills.add(node.textValue()));
-            employee = Employee.builder()._id(employeeNode.get("_id").textValue())
+            employee = Employee.builder()
+//                    ._id(employeeNode.get("_id").textValue())
                     .name(sourceNode.get("name").textValue())
                     .dob(sourceNode.get("dob").textValue())
                     .address(new Address(addressNode.get("country").textValue(), addressNode.get("town").textValue()))

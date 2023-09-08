@@ -2,7 +2,6 @@ package by.mitrahovich.elasticsearch.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.*;
 
 import java.util.List;
@@ -14,9 +13,8 @@ import java.util.List;
 @Builder
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonRootName("_source")
 public class Employee {
-    private String _id;
+    private String id;
     private String name;
     private String dob;
     private Address address;

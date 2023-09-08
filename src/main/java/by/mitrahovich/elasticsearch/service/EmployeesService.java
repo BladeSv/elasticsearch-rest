@@ -34,7 +34,7 @@ public class EmployeesService {
     }
 
 
-    public String getAggregation(String metricField, String metricType, String aggregationField) throws IOException {
-        return employeesRepository.getAggregation(metricField, metricType, aggregationField);
+    public String getAvgAggregation(String metricField, String aggregationField) throws IOException {
+        return employeesRepository.getAvgAggregation(metricField, aggregationField);
     }
 }

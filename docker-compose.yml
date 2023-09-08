@@ -1,16 +1,16 @@
 version: "3.8"
 services:
-  app_elastic:
-    container_name: elasticapp
-    build:
-      context: .
-    depends_on:
-      - elasticsearch
-      - kibana
-    ports:
-      - "8080:8080"
-    networks:
-      - elasticnet
+  #  app_elastic:
+  #    container_name: elasticapp
+  #    build:
+  #      context: .
+  #    depends_on:
+  #      - elasticsearch
+  #      - kibana
+  #    ports:
+  #      - "8080:8080"
+  #    networks:
+  #      - elasticnet
 
   elasticsearch:
     container_name: elasticsearch

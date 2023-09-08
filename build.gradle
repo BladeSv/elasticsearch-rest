@@ -26,8 +26,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
 //    implementation 'org.springframework.boot:spring-boot-starter'
-    // https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-client
-    implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '8.9.1'
+//    // https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-client
+//    implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '8.9.1'
+
+    implementation 'co.elastic.clients:elasticsearch-java:8.9.2'
 // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
 // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind

@@ -34,11 +34,10 @@ public class EmployeesController {
         return employeesService.getEmployeeByField(field, value);
     }
 
-    @GetMapping("/aggr")
-    public String getAggregation(@Parameter(name = "metricField", description = "Name of metric field", example = "avg_experience", required = true) String metricField,
-                                 @Parameter(name = "metricType", description = "Type  of metric", example = "avg", required = true) String metricType,
-                                 @Parameter(name = "aggregationField", description = "field of aggregation", example = "experience", required = true) String aggregationField) throws IOException {
-        return employeesService.getAggregation(metricField, metricType, aggregationField);
+    @GetMapping("/avg")
+    public String getAggregation(@Parameter(name = "metricField", description = "Name of avg metric field", example = "avg_experience", required = true) String metricField,
+                                 @Parameter(name = "aggregationField", description = "field of avg aggregation", example = "experience", required = true) String aggregationField) throws IOException {
+        return employeesService.getAvgAggregation(metricField, aggregationField);
     }
 
     @PostMapping
