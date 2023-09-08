@@ -1,8 +1,13 @@
-# elasticsearch-rest
+# Elasticsearch-rest
 
 ## Run guide
 
 Docker require for staring this project.
+
+### Tasks:
+
+- Task 3. Branch ``main``
+- Task 4. Branch ``task4``
 
 For start ``docker-compose up --build`` ('--build' require for rebuild app after switching branches )
 
